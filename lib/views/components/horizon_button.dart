@@ -4,25 +4,29 @@ import 'package:flutter/material.dart';
 class HorizonButton extends StatelessWidget {
   final String? text;
   final IconData? icon;
+  final double? iconSize;
+  final EdgeInsets? padding;
   final void Function() onTap;
   final bool isLoading;
   final Color? color;
-  final Color? textColor;
+  final Color? foregroundColor;
   final double borderRadius;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   const HorizonButton({
     Key? key,
     this.text,
     this.icon,
+    this.iconSize,
+    this.padding,
     required this.onTap,
     this.isLoading = false,
     this.color,
-    this.textColor,
-    this.width = double.infinity,
+    this.foregroundColor,
+    this.width,
     this.height = 48.0,
-    this.borderRadius = 10.0,
+    this.borderRadius = 8.0,
   }) : super(key: key);
 
   @override
@@ -34,10 +38,10 @@ class HorizonButton extends StatelessWidget {
         onPressed: isLoading ? null : onTap,
         style: _buildStyle(
           color ?? Theme.of(context).primaryColor,
-          textColor ?? Colors.white,
+          foregroundColor ?? Colors.white,
         ),
         child: text == null
-            ? Icon(icon, size: 30)
+            ? FittedBox(child: Icon(icon, size: iconSize))
             : Text(
                 text ?? '',
                 style: const TextStyle(fontSize: 16.0),
@@ -49,6 +53,7 @@ class HorizonButton extends StatelessWidget {
   ButtonStyle _buildStyle(Color color, Color textColor) {
     return ButtonStyle(
       animationDuration: Duration.zero,
+      padding: MaterialStateProperty.all(padding),
       shape: MaterialStateProperty.all<OutlinedBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),

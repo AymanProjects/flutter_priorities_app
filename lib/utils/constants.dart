@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 // --------------UI---------------- //
 
 /// 1.0
-const double kSmBlockAspectRatio = 1.0;
+const double kSmBlockAspectRatio = 2;
 
 /// 1.5
-const double kMdBlockAspectRatio = 1.0;
+const double kMdBlockAspectRatio = 1.5;
 
 /// 2.0
 const double kLgBlockAspectRatio = 1.0;
@@ -16,7 +16,7 @@ const double kBorderRadius = 10.0;
 
 // ------------Colors---------------- //
 
-const Color kAppColor = Colors.indigo;
+const Color kAppColor = Colors.indigoAccent;
 
 // ------------Paddings----------------- //
 

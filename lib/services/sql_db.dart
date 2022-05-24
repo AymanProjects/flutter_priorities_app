@@ -13,7 +13,7 @@ class SQLDB {
     Priority(
       emoji: '🍕',
       title: 'Buy Pizza Ingredaints',
-      color: Colors.indigo,
+      color: Colors.indigoAccent,
       tasks: [
         Task(title: 'Cheeese eeeeeeeeeeeeeeee', isCompleted: false),
         Task(title: 'Flour', isCompleted: true),
@@ -26,7 +26,7 @@ class SQLDB {
     Priority(
       emoji: '🎁',
       title: 'Birthday Gift',
-      color: Colors.red,
+      color: Colors.redAccent,
       tasks: [
         Task(title: 'Buy A Gift', isCompleted: true),
         Task(title: 'Gift Wrapping', isCompleted: false),
@@ -36,7 +36,7 @@ class SQLDB {
     Priority(
       emoji: '🎨',
       title: 'Art Course',
-      color: Colors.teal,
+      color: Colors.teal.shade400,
       tasks: [
         Task(title: 'Take a Friend', isCompleted: false),
         Task(title: 'Attend', isCompleted: false),

@@ -10,6 +10,9 @@ ThemeData lightTheme() {
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
     iconTheme: const IconThemeData(color: Colors.grey),
+    bottomSheetTheme: const BottomSheetThemeData(
+      modalBackgroundColor: Colors.white,
+    ),
   );
 }
 
@@ -31,4 +34,28 @@ MaterialColor _createMaterialColor(Color color) {
     );
   }
   return MaterialColor(color.value, swatch);
+}
+
+Color darkenColor(Color c, [int percent = 15]) {
+  assert(1 <= percent && percent <= 100);
+  var f = 1 - percent / 100;
+  return Color.fromARGB(
+    c.alpha,
+    (c.red * f).round(),
+    (c.green * f).round(),
+    (c.blue * f).round(),
+  );
+}
+
+/// Lighten a color by [percent] amount (100 = white)
+// ........................................................
+Color lightenColor(Color c, [int percent = 15]) {
+  assert(1 <= percent && percent <= 100);
+  var p = percent / 100;
+  return Color.fromARGB(
+    c.alpha,
+    c.red + ((255 - c.red) * p).round(),
+    c.green + ((255 - c.green) * p).round(),
+    c.blue + ((255 - c.blue) * p).round(),
+  );
 }

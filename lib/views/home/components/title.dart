@@ -8,8 +8,8 @@ class HomeViewTitle extends StatelessWidget {
     return const Text(
       'Your Priorities',
       style: TextStyle(
-        fontSize: 18.0,
-        fontWeight: FontWeight.bold,
+        fontSize: 24.0,
+        fontWeight: FontWeight.w800,
       ),
     );
   }

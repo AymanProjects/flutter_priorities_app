@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:priorities/utils/constants.dart';
-import 'package:priorities/views/home/components/new_priority_button.dart';
+import 'package:priorities/views/home/components/buttons/create_priority_button.dart';
+import 'package:priorities/views/home/components/buttons/options_button.dart';
+import 'package:priorities/views/home/components/buttons/categories_view_button.dart';
 import 'package:priorities/views/home/components/priorities_grid.dart';
-import 'package:priorities/views/home/components/home_view_title.dart';
+import 'package:priorities/views/home/components/title.dart';
 import 'package:priorities/views/home/home_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -20,37 +22,22 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.only(
             left: kLgPadding,
             right: kLgPadding,
+            bottom: kLgPadding,
             top: kLgPadding * 2,
           ),
           child: Scaffold(
-            floatingActionButton: const NewPriorityButton(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HomeViewTitle(),
-                const SizedBox(height: kLgPadding),
-                //TODO
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    Text(
-                      'Recent',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: kAppColor,
-                      ),
-                    ),
-                    Spacer(),
-                    Icon(Icons.settings_rounded),
-                    SizedBox(width: kSmPadding),
-                    Icon(Icons.menu_rounded),
-                  ],
+              children: const [
+                OptionsViewButton(),
+                HomeViewTitle(),
+                SizedBox(height: kLgPadding),
+                CategoriesViewButton(),
+                SizedBox(height: kSmPadding),
+                Expanded(
+                  child: PrioritiesGrid(),
                 ),
-                const SizedBox(height: kSmPadding),
-                // TODO
-                const PrioritiesGrid(blocksAspectRatio: kSmBlockAspectRatio),
+                CreatePriorityButton(),
               ],
             ),
           ),
