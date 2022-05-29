@@ -9,6 +9,7 @@ class HorizonButton extends StatelessWidget {
   final void Function() onTap;
   final bool isLoading;
   final Color? color;
+  final Color? borderColor;
   final Color? foregroundColor;
   final double borderRadius;
   final double? width;
@@ -23,6 +24,7 @@ class HorizonButton extends StatelessWidget {
     required this.onTap,
     this.isLoading = false,
     this.color,
+    this.borderColor,
     this.foregroundColor,
     this.width,
     this.height = 48.0,
@@ -57,6 +59,9 @@ class HorizonButton extends StatelessWidget {
       shape: MaterialStateProperty.all<OutlinedBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
+          side: borderColor == null
+              ? BorderSide.none
+              : BorderSide(color: borderColor!),
         ),
       ),
       backgroundColor: MaterialStateProperty.resolveWith<Color?>(

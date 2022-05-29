@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/models/priority.dart';
+import 'package:priorities/domain/base/view.dart';
+import 'package:priorities/domain/entities/priority.dart';
 import 'package:priorities/views/priority/priority_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 //  UI code only
 
-class PriorityView extends StatelessWidget {
+class PriorityView extends View {
   final Priority? priority;
 
   /// if the priority is null, then will use this view to create a new one

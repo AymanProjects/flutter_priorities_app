@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:priorities/app.dart';
+import 'package:priorities/init.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //TODO db instalise tables
+  await init();
   runApp(const App());
 }

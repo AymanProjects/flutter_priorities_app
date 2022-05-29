@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/views/components/horizon_button.dart';
+import 'package:priorities/views/__components/horizon_button.dart';
 
 class HorizonIconButton extends StatelessWidget {
   final void Function() onTap;
@@ -13,8 +13,8 @@ class HorizonIconButton extends StatelessWidget {
     required this.onTap,
     required this.icon,
     this.iconSize = 22.0,
-    this.iconColor,
-    this.color,
+    this.iconColor = Colors.black45,
+    this.color = Colors.white,
   }) : super(key: key);
 
   @override
@@ -22,8 +22,8 @@ class HorizonIconButton extends StatelessWidget {
     return HorizonButton(
       onTap: onTap,
       icon: icon,
-      foregroundColor: iconColor ?? Colors.grey,
-      color: color ?? Colors.white,
+      foregroundColor: iconColor,
+      color: color,
       iconSize: iconSize,
       height: iconSize,
       width: iconSize,

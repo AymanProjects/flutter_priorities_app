@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/views/components/horizon_icon_button.dart';
+import 'package:priorities/views/__components/horizon_icon_button.dart';
 import 'package:priorities/views/home/home_view_model.dart';
 import 'package:stacked/stacked.dart';
 

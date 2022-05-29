@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:priorities/services/router.dart';
 import 'package:priorities/utils/constants.dart';
 import 'package:priorities/utils/theme.dart';
 import 'package:priorities/views/home/home_view.dart';
@@ -23,6 +24,7 @@ class App extends StatelessWidget {
       color: kAppColor,
       theme: lightTheme(),
       debugShowCheckedModeBanner: false,
+      navigatorKey: AppRouter.navigatorKey,
       home: Scaffold(
         body: SafeArea(
           child: NotificationListener<OverscrollIndicatorNotification>(

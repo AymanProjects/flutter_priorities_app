@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:priorities/domain/entities/priority.dart';
 import 'package:priorities/utils/constants.dart';
 import 'package:priorities/views/home/components/empty_priorities_grid.dart';
 import 'package:priorities/views/home/components/priority_block/priority_block.dart';
@@ -10,8 +11,12 @@ class PrioritiesGrid extends ViewModelWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context, viewModel) {
-    return viewModel.hasPriorities
-        ? GridView.count(
+    return FutureBuilder<List<Priority>>(
+      future: viewModel.loadPriorities,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final priorities = snapshot.data;
+          return GridView.count(
             childAspectRatio: viewModel.gridBlocksSize,
             shrinkWrap: true,
             crossAxisCount: 2,
@@ -21,10 +26,12 @@ class PrioritiesGrid extends ViewModelWidget<HomeViewModel> {
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
             ),
-            children: viewModel.priorities
-                .map((priority) => PriorityBlock(priority))
-                .toList(),
-          )
-        : const EmptyPrioritiesGrid();
+            children:
+                priorities!.map((priority) => PriorityBlock(priority)).toList(),
+          );
+        }
+        return const EmptyPrioritiesGrid();
+      },
+    );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/models/task.dart';
+import 'package:priorities/domain/entities/task.dart';
 import 'package:priorities/utils/constants.dart';
 
 class BlockTasksList extends StatelessWidget {
