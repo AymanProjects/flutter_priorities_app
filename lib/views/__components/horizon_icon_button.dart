@@ -4,17 +4,21 @@ import 'package:priorities/views/__components/horizon_button.dart';
 class HorizonIconButton extends StatelessWidget {
   final void Function() onTap;
   final IconData? icon;
-  final double iconSize;
+  final double? width;
+  final double height;
   final Color? iconColor;
   final Color? color;
+  final String? text;
 
   const HorizonIconButton({
     Key? key,
     required this.onTap,
     required this.icon,
-    this.iconSize = 22.0,
+    this.width,
+    this.height = 22.0,
     this.iconColor = Colors.black45,
     this.color = Colors.white,
+    this.text,
   }) : super(key: key);
 
   @override
@@ -24,9 +28,10 @@ class HorizonIconButton extends StatelessWidget {
       icon: icon,
       foregroundColor: iconColor,
       color: color,
-      iconSize: iconSize,
-      height: iconSize,
-      width: iconSize,
+      iconSize: height,
+      height: height,
+      width: width,
+      text: text,
       padding: EdgeInsets.zero,
     );
   }

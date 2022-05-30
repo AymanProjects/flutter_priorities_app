@@ -23,21 +23,18 @@ class CategoriesView extends StatelessWidget {
                 children: [
                   HorizonIconButton(
                     onTap: Navigator.of(context).pop,
-                    icon: Icons.keyboard_arrow_down_rounded,
-                    iconSize: 32.0,
+                    icon: Icons.close_sharp,
                   ),
-                  Text(
+                  const Text(
                     'Categories',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8),
                     ),
                   ),
                   HorizonIconButton(
                     onTap: Navigator.of(context).pop,
                     icon: Icons.add_rounded,
-                    iconSize: 26.0,
                   ),
                 ],
               ),

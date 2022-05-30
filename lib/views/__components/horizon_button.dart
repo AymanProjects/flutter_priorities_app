@@ -19,7 +19,7 @@ class HorizonButton extends StatelessWidget {
     Key? key,
     this.text,
     this.icon,
-    this.iconSize,
+    this.iconSize = 22.0,
     this.padding,
     required this.onTap,
     this.isLoading = false,
@@ -42,18 +42,31 @@ class HorizonButton extends StatelessWidget {
           color ?? Theme.of(context).primaryColor,
           foregroundColor ?? Colors.white,
         ),
-        child: text == null
-            ? FittedBox(child: Icon(icon, size: iconSize))
-            : Text(
-                text ?? '',
-                style: const TextStyle(fontSize: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text ?? '',
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            if (icon != null && text != null) const SizedBox(width: 10.0),
+            if (icon != null)
+              FittedBox(
+                child: Icon(
+                  icon,
+                  size: iconSize,
+                ),
               ),
+          ],
+        ),
       ),
     );
   }
 
   ButtonStyle _buildStyle(Color color, Color textColor) {
     return ButtonStyle(
+      minimumSize: MaterialStateProperty.all(Size.zero),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       animationDuration: Duration.zero,
       padding: MaterialStateProperty.all(padding),
       shape: MaterialStateProperty.all<OutlinedBorder>(
