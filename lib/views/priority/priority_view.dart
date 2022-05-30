@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:priorities/domain/entities/priority.dart';
+import 'package:priorities/views/__components/view.dart';
 import 'package:priorities/views/priority/priority_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -19,7 +20,10 @@ class PriorityView extends StatelessWidget {
     return ViewModelBuilder<PriorityViewModel>.reactive(
       viewModelBuilder: () => PriorityViewModel(),
       builder: (context, viewModel, child) {
-        return Container();
+        return const View(
+          title: 'New',
+          children: [],
+        );
       },
     );
   }

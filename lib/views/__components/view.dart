@@ -22,34 +22,36 @@ class View extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: kLgPadding,
-        right: kLgPadding,
-        top: kLgPadding * 1.5,
-      ),
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                hasBackButton ? const PopButton() : const SizedBox(),
-                const Spacer(),
-                trailing ?? const SizedBox(),
-              ],
-            ),
-            const SizedBox(height: kMdPadding),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.w800,
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: kLgPadding,
+            right: kLgPadding,
+            top: kLgPadding * 1.5,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  hasBackButton ? const PopButton() : const SizedBox(),
+                  const Spacer(),
+                  trailing ?? const SizedBox(),
+                ],
               ),
-            ),
-            const SizedBox(height: kLgPadding),
-            ...children,
-          ],
+              const SizedBox(height: kLgPadding),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: kLgPadding),
+              ...children,
+            ],
+          ),
         ),
       ),
     );

@@ -26,14 +26,12 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: AppRouter.navigatorKey,
       home: Scaffold(
-        body: SafeArea(
-          child: NotificationListener<OverscrollIndicatorNotification>(
-            onNotification: (scroll) {
-              scroll.disallowIndicator();
-              return true;
-            },
-            child: const HomeView(),
-          ),
+        body: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (scroll) {
+            scroll.disallowIndicator();
+            return true;
+          },
+          child: const HomeView(),
         ),
       ),
     );
