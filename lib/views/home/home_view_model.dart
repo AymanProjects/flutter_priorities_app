@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:priorities/data/repos/priorities_repo.dart';
-import 'package:priorities/domain/base/view_model.dart';
 import 'package:priorities/domain/entities/category.dart';
 import 'package:priorities/domain/entities/priority.dart';
 import 'package:priorities/services/router.dart';
 import 'package:priorities/utils/constants.dart';
 import 'package:priorities/views/categories/categories_view.dart';
 import 'package:priorities/views/priority/priority_view.dart';
+import 'package:stacked/stacked.dart';
 
 //  Logic code only
 
-class HomeViewModel extends ViewModel {
+class HomeViewModel extends BaseViewModel {
   final router = AppRouter();
   double gridBlocksSize = kLgBlockAspectRatio;
 

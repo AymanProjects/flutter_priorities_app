@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/domain/base/view.dart';
 import 'package:priorities/utils/constants.dart';
 import 'package:priorities/views/__components/horizon_button.dart';
 import 'package:priorities/views/__components/horizon_icon_button.dart';
 import 'package:priorities/views/categories/categories_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-class CategoriesView extends View {
+class CategoriesView extends StatelessWidget {
   const CategoriesView({Key? key}) : super(key: key);
 
   @override

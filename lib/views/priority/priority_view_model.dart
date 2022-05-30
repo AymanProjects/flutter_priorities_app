@@ -1,5 +1,5 @@
-import 'package:priorities/domain/base/view_model.dart';
+import 'package:stacked/stacked.dart';
 
 //  Logic code only
 
-class PriorityViewModel extends ViewModel {}
+class PriorityViewModel extends BaseViewModel {}

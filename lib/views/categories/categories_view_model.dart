@@ -1,7 +1,7 @@
-import 'package:priorities/domain/base/view_model.dart';
 import 'package:priorities/domain/entities/category.dart';
+import 'package:stacked/stacked.dart';
 
-class CategroiesViewModel extends ViewModel {
+class CategroiesViewModel extends BaseViewModel {
   //TODO
   List<Category> get categories => [
         Category(name: 'New'),

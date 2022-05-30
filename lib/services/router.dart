@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:priorities/domain/base/view.dart';
 
 class AppRouter {
   static final _this = AppRouter._();
@@ -8,7 +7,7 @@ class AppRouter {
   AppRouter._();
   factory AppRouter() => _this;
 
-  Future<Object?>? open(View view) {
+  Future<Object?>? open(Widget view) {
     return navigatorKey.currentState?.push(
       MaterialPageRoute(
         builder: (context) => view,
