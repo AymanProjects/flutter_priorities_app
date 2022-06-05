@@ -49,7 +49,7 @@ class CategoriesView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: HorizonButton(
                         onTap: () => viewModel.setSelectedCategory(category),
-                        text: category.name,
+                        text: category.title,
                         borderColor:
                             viewModel.selectedCategory.id == category.id
                                 ? null

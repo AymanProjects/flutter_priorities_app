@@ -10,15 +10,22 @@ class EmptyDataSource<T extends BaseEntity> extends BaseDataSource<T> {
   }
 
   @override
-  Future<int> createOrUpdate(T entity) {
+  Future<int> create(T entity) {
     throw Exception();
   }
 
   @override
-  Future<bool> delete(int id) {
+  Future<bool> delete(T entity) {
     throw Exception();
   }
 
   @override
-  Future<void> init() async {}
+  Future<void> createMany(List<T> entity) {
+    throw Exception();
+  }
+
+  @override
+  Future<T> find(int id) {
+    throw Exception();
+  }
 }

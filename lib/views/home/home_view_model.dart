@@ -15,11 +15,11 @@ class HomeViewModel extends BaseViewModel {
   double gridBlocksSize = kLgBlockAspectRatio;
 
   //TODO
-  Category get selectedCategory => Category(name: 'Recent');
+  Category get selectedCategory => Category(title: 'Recent');
 
   Future<List<Priority>> get loadPriorities async => PrioritiesRepo().all();
 
-  void createNewPriority(BuildContext context) {
+  void priorityButtonOnTap(BuildContext context) {
     router.open(const PriorityView());
   }
 

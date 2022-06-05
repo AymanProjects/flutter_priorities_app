@@ -4,8 +4,11 @@ import 'package:priorities/domain/base/base_entity.dart';
 /// An example of data source is: Sqfilte or Hive
 
 abstract class BaseDataSource<T extends BaseEntity> {
-  Future<void> init();
-  Future<int> createOrUpdate(T entity);
+  Future<void> create(T entity);
+  Future<void> createMany(List<T> entity);
+  Future<void> delete(T entity);
+  Future<T> find(int id);
   Future<List<T>> all();
-  Future<bool> delete(int id);
+
+  const BaseDataSource();
 }

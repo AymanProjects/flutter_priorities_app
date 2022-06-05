@@ -1,1 +1,3 @@
-abstract class BaseEntity {}
+abstract class BaseEntity {
+  int id = 0;
+}

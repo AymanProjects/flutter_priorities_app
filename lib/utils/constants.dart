@@ -34,6 +34,4 @@ const double kLgPadding = 18.0;
 
 // ------------ Storage ----------------- //
 
-const String kCategoriesTableName = 'categories';
-const String kPrioritiesTableName = 'priorities';
-const String kTasksTableName = 'tasks';
+

@@ -14,7 +14,7 @@ class SelectedCategory extends ViewModelWidget<HomeViewModel> {
         HorizonIconButton(
           onTap: () => viewModel.categoriesViewButtonOnTap(context),
           icon: Icons.filter_list_rounded,
-          text: viewModel.selectedCategory.name,
+          text: viewModel.selectedCategory.title,
         ),
       ],
     );

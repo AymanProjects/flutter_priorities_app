@@ -9,7 +9,7 @@ class CreatePriorityButton extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, viewModel) {
     return HorizonButton(
-      onTap: () => viewModel.createNewPriority(context),
+      onTap: () => viewModel.priorityButtonOnTap(context),
       icon: Icons.add_rounded,
       width: double.infinity,
       iconSize: 32.0,

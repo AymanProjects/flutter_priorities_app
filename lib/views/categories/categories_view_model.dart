@@ -4,10 +4,10 @@ import 'package:stacked/stacked.dart';
 class CategroiesViewModel extends BaseViewModel {
   //TODO
   List<Category> get categories => [
-        Category(name: 'New'),
-        Category(name: 'Recent'),
-        Category(name: 'Important'),
-        Category(name: 'Down the list'),
+        Category(title: 'New'),
+        Category(title: 'Recent'),
+        Category(title: 'Important'),
+        Category(title: 'Down the list'),
       ];
 
   //TODO
