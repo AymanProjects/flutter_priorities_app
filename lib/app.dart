@@ -1,9 +1,9 @@
+import 'package:priorities/data/constants/theme.dart';
+import 'package:priorities/presentation/views/home/home_view.dart';
+import 'package:priorities/services/app_router.dart';
+import 'package:priorities/services/notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:priorities/services/router.dart';
-import 'package:priorities/utils/constants.dart';
-import 'package:priorities/utils/theme.dart';
-import 'package:priorities/views/home/home_view.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -22,9 +22,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Priorities',
       color: kAppColor,
-      theme: lightTheme(),
+      theme: kLightTheme,
       debugShowCheckedModeBanner: false,
       navigatorKey: AppRouter.navigatorKey,
+      scaffoldMessengerKey: Notifier.messengerKey,
       home: Scaffold(
         body: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (scroll) {
