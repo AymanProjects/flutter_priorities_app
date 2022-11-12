@@ -8,8 +8,18 @@ class CategoriesRepository implements CategoriesDataAPIS {
   const CategoriesRepository({required this.localSource});
 
   @override
-  Future<Category> find(String id) {
+  Future<void> initDefaultValues() {
+    return localSource.initDefaultValues();
+  }
+
+  @override
+  Future<Category> find(int id) {
     return localSource.find(id);
+  }
+
+  @override
+  Future<List<Category>> findMany(Set<int> ids) {
+    return localSource.findMany(ids);
   }
 
   @override
@@ -23,13 +33,8 @@ class CategoriesRepository implements CategoriesDataAPIS {
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(int id) {
     return localSource.delete(id);
-  }
-
-  @override
-  Future<void> initDefaultValues() {
-    return localSource.initDefaultValues();
   }
 
   @override

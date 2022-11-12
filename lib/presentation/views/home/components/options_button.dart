@@ -7,8 +7,11 @@ class OptionsButton extends ViewModelWidget<HomeViewModel> {
   const OptionsButton({Key? key}) : super(key: key);
 
   @override
+  bool get reactive => false;
+
+  @override
   Widget build(BuildContext context, viewModel) {
-    return HorizonIconButton(
+    return HorizonThinButton(
       onPressed: () {},
       icon: Icons.settings_rounded,
     );

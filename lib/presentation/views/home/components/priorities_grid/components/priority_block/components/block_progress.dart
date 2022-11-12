@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BlockProgress extends StatelessWidget {
-  final double progress;
+  final double? progress;
 
   const BlockProgress(
     this.progress, {

@@ -1,53 +1,99 @@
-import 'package:priorities/data/repositories/categories_repo.dart';
 import 'package:priorities/data/repositories/priorities_repo.dart';
-import 'package:priorities/data/models/category.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:priorities/data/models/priority.dart';
+import 'package:priorities/services/app_notifier.dart';
 import 'package:priorities/services/app_router.dart';
-import 'package:priorities/data/models/task.dart';
 import 'package:priorities/injection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
+import 'dart:math';
 
 //  Logic code only
 
 class PriorityViewModel extends BaseViewModel {
   Priority? priority;
-  final selectedCategories = <Category>[];
-  final tasks = <Task>[];
-  final emojiController = TextEditingController();
+  late String selectedEmoji;
+  late int selectedColor;
+  late List<int> categoryIDs;
+  late List<int> taskIDs;
+
+  final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
-  int selectedColor = Priority.defaultColorId;
+  final textKeyboardNode = FocusNode();
 
-  PriorityViewModel([this.priority]);
+  bool isEmojiKeyboardShowing = false;
 
-  bool get editingMode => priority != null;
+  PriorityViewModel(this.priority);
 
-  String get title => editingMode ? 'Edit' : 'New';
+  void init() {
+    selectedColor = priority?.colorId ?? Random().nextInt(kCardColors.length);
+    titleController.text = priority?.title ?? '';
+    selectedEmoji = '📔';
+    categoryIDs = priority?.categoryIDs ?? <int>[];
+    taskIDs = priority?.taskIDs ?? <int>[];
 
-  String get buttonText => editingMode ? 'Confirm' : 'Create';
+    textKeyboardNode.addListener(() {
+      if (textKeyboardNode.hasFocus) {
+        closeEmojiKeyboard();
+      }
+    });
+  }
 
-  void createOrUpdatePriority() async {
-    // Start loading
-    setBusy(true);
+  bool get isEditingMode => priority != null;
 
-    // Creaet a new Priority
-    Priority priority = Priority(
+  void onCreateOrConfirmButtonPressed() async {
+    if (formKey.currentState?.validate() ?? false) {
+      runBusyFuture(_createOrUpdatePriority())
+          .then(
+            (value) => locator<AppRouter>().closeCurrentPage(value),
+          )
+          .catchError(
+            (error) => locator<AppNotifier>().showError(error.toString()),
+          );
+    }
+  }
+
+  Future<Priority> _createOrUpdatePriority() {
+    final updatedPriority = Priority(
+      id: priority?.id,
       colorId: selectedColor,
-      categories: selectedCategories,
+      categoryIDs: categoryIDs,
+      taskIDs: taskIDs,
+      emoji: selectedEmoji,
+      title: titleController.text,
     );
+    return locator<PrioritiesRepository>().updateOrCreate(updatedPriority);
+  }
 
-    // Assign this Priority to the default Categories
-    final defaultCategories =
-        await locator<CategoriesRepository>().allDefaultCategories();
-    priority.categories?.addAll(defaultCategories);
+  void setSelectedColor(int index) {
+    selectedColor = index;
+    notifyListeners();
+  }
 
-    // Store the Priority
-    await locator<PrioritiesRepository>().updateOrCreate(priority);
+  String? titleValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Title must be provided';
+    }
+    return null;
+  }
 
-    // Stop loading
-    setBusy(false);
+  void onEmojiIconPressed() async {
+    if (textKeyboardNode.hasFocus) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      await Future.delayed(const Duration(milliseconds: 250));
+    }
+    isEmojiKeyboardShowing = true;
+    notifyListeners();
+  }
 
-    // Back to previous page
-    locator<AppRouter>().closeCurrentPage();
+  void onEmojiSelected(_, Emoji emoji) {
+    selectedEmoji = emoji.emoji;
+    closeEmojiKeyboard();
+  }
+
+  void closeEmojiKeyboard() {
+    isEmojiKeyboardShowing = false;
+    notifyListeners();
   }
 }

@@ -9,10 +9,14 @@ class BlockEmoji extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      emoji,
-      style: const TextStyle(
-        fontSize: 24.0,
+    return Expanded(
+      child: Text(
+        emoji,
+        softWrap: false,
+        overflow: TextOverflow.fade,
+        style: const TextStyle(
+          fontSize: 24.0,
+        ),
       ),
     );
   }

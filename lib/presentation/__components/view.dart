@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 /// Standard view to be used by every screen in this app.
 /// It gives the screens standard configurations like padding.
 
-/// TODO add to horizon kit
 class View extends StatelessWidget {
   final String title;
   final List<Widget> children;
@@ -32,12 +31,15 @@ class View extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  hasBackButton ? const ClosePageButton() : const SizedBox(),
-                  const Spacer(),
-                  trailing ?? const SizedBox(),
-                ],
+              SizedBox(
+                height: 22.0,
+                child: Row(
+                  children: [
+                    hasBackButton ? const ClosePageButton() : const SizedBox(),
+                    const Spacer(),
+                    trailing ?? const SizedBox(),
+                  ],
+                ),
               ),
               const SizedBox(height: 18.0),
               Text(

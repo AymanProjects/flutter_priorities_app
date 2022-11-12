@@ -1,7 +1,7 @@
 import 'package:priorities/data/constants/theme.dart';
 import 'package:priorities/presentation/views/home/home_view.dart';
 import 'package:priorities/services/app_router.dart';
-import 'package:priorities/services/notifier.dart';
+import 'package:priorities/services/app_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,20 +19,20 @@ class App extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      title: 'Priorities',
-      color: kAppColor,
-      theme: kLightTheme,
-      debugShowCheckedModeBanner: false,
-      navigatorKey: AppRouter.navigatorKey,
-      scaffoldMessengerKey: Notifier.messengerKey,
-      home: Scaffold(
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (scroll) {
-            scroll.disallowIndicator();
-            return true;
-          },
-          child: const HomeView(),
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (scroll) {
+        scroll.disallowIndicator();
+        return true;
+      },
+      child: MaterialApp(
+        title: 'Priorities',
+        color: kAppColor,
+        theme: kLightTheme,
+        debugShowCheckedModeBanner: false,
+        navigatorKey: AppRouter.navigatorKey,
+        scaffoldMessengerKey: AppNotifier.messengerKey,
+        home: const Scaffold(
+          body: HomeView(),
         ),
       ),
     );

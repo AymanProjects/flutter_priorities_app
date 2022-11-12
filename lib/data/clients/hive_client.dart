@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 /// A helper class for wrapping the 3rd-party Hive package
 
-class HiveStorageClient {
+class HiveStorageClient<T> {
   final String boxName;
 
   const HiveStorageClient({required this.boxName});
@@ -12,54 +12,64 @@ class HiveStorageClient {
     Hive.init((await getApplicationDocumentsDirectory()).path);
   }
 
-  Future<String> generateID() async {
-    final box = await Hive.openBox(boxName);
-    return (box.length + 1).toString();
+  Stream<BoxEvent> onChange() async* {
+    final box = await Hive.openBox<T>(boxName);
+    yield* box.watch();
   }
 
-  Future<dynamic> read({
-    required String key,
+  Future<int> generateID() async {
+    final box = await Hive.openBox<T>(boxName);
+    return box.length + 1;
+  }
+
+  Future<T?> find({
+    required key,
   }) async {
-    final box = await Hive.openBox(boxName);
+    final box = await Hive.openBox<T>(boxName);
     return box.get(key);
   }
 
-  Future<List<dynamic>> readAll() async {
-    final box = await Hive.openBox(boxName);
+  Future<List<T>> all() async {
+    final box = await Hive.openBox<T>(boxName);
     return box.values.toList();
   }
 
   Future<bool> valueExists({
-    required String key,
+    required key,
   }) async {
-    final box = await Hive.openBox(boxName);
+    final box = await Hive.openBox<T>(boxName);
     return box.keys.contains(key);
   }
 
-  Future<void> write({
-    required String key,
-    required dynamic value,
+  Future<T> updateOrCreate({
+    required key,
+    required T value,
   }) async {
-    final box = await Hive.openBox(boxName);
-    return box.put(key, value);
+    final box = await Hive.openBox<T>(boxName);
+    await box.put(key, value);
+    await box.flush();
+    return value;
   }
 
-  Future<void> writeMany({
-    required Map<dynamic, dynamic> entries,
+  Future<void> updateOrCreateMany({
+    required Map<dynamic, T> values,
   }) async {
-    final box = await Hive.openBox(boxName);
-    return box.putAll(entries);
+    final box = await Hive.openBox<T>(boxName);
+    await box.putAll(values);
+    await box.flush();
   }
 
   Future<void> delete({
-    required String key,
+    required key,
   }) async {
-    final box = await Hive.openBox(boxName);
-    return box.delete(key);
+    final box = await Hive.openBox<T>(boxName);
+    await box.delete(key);
+    await box.flush();
   }
 
   Future<void> deleteAll() async {
-    final box = await Hive.openBox(boxName);
-    return box.deleteFromDisk();
+    final box = await Hive.openBox<T>(boxName);
+    await box.clear();
+    await box.flush();
   }
 }

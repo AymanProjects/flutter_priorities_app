@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 /// Put the `Notifier.messengerKey` inside the MaterialApp.
 ///
 
-class Notifier {
+class AppNotifier {
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
-  const Notifier();
+  const AppNotifier();
 
-  void show(String message) {
-    final snack = SnackBar(content: Text(message.toString()));
+  void showError(String error) {
+    final snack = SnackBar(
+      content: Text(error),
+      elevation: 0,
+      backgroundColor: Colors.redAccent,
+    );
     messengerKey.currentState?.showSnackBar(snack);
   }
 }

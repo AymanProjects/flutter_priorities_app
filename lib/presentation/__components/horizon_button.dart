@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// TODO put in Horizon UI kit
 class HorizonButton extends StatelessWidget {
   final String? text;
+  final double? textSize;
   final IconData? icon;
   final double? iconSize;
   final EdgeInsets? padding;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final bool isLoading;
   final Color? color;
   final Color? borderColor;
@@ -14,10 +14,12 @@ class HorizonButton extends StatelessWidget {
   final double borderRadius;
   final double? width;
   final double? height;
+  final bool stretch;
 
   const HorizonButton({
     required this.onPressed,
     this.text,
+    this.textSize = 16.0,
     this.icon,
     this.iconSize = 22.0,
     this.padding,
@@ -28,6 +30,7 @@ class HorizonButton extends StatelessWidget {
     this.width,
     this.height = 48.0,
     this.borderRadius = 8.0,
+    this.stretch = true,
     super.key,
   });
 
@@ -44,10 +47,11 @@ class HorizonButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: stretch ? MainAxisSize.max : MainAxisSize.min,
           children: [
             Text(
               text ?? '',
-              style: const TextStyle(fontSize: 16.0),
+              style: TextStyle(fontSize: textSize),
             ),
             if (icon != null && text != null) const SizedBox(width: 10.0),
             if (icon != null)

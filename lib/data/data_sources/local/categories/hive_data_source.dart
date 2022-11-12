@@ -9,52 +9,52 @@ class HiveCategoriesLocalDataSource implements CategoriesDataSource {
 
   @override
   Future<void> initDefaultValues() async {
-    const defaultCategory = Category(id: '0', title: 'Recent');
-    await client.write(
-      key: defaultCategory.id!,
-      value: defaultCategory.toMap(),
+    const defaultCategory0 = Category(title: 'Recent', isDefault: true, id: 1);
+    await client.updateOrCreateMany(
+      values: {defaultCategory0.id: defaultCategory0.toMap()},
     );
   }
 
   @override
-  Future<Category> find(String id) async {
-    final map = await client.read(
-      key: id,
-    );
+  Future<Category> find(int id) async {
+    final map = Map<String, dynamic>.from(await client.find(key: id));
     return Category.fromMap(map);
   }
 
   @override
+  Future<List<Category>> findMany(Set<int> ids) async {
+    final allCategories = await all();
+    return allCategories.where((element) => ids.contains(element.id)).toList();
+  }
+
+  @override
   Future<List<Category>> all() async {
-    final list = await client.readAll();
-    return list
-        .map((map) => Category.fromMap(Map<String, dynamic>.from(map)))
-        .toList();
+    final list = await client.all();
+    final listOfMaps = list.map((e) => Map<String, dynamic>.from(e)).toList();
+    return listOfMaps.map((map) => Category.fromMap(map)).toList();
   }
 
   @override
-  Future<Category> updateOrCreate(Category category) async {
-    if (category.id == null) {
-      final id = await client.generateID();
-      category = category.copyWith(id: id);
+  Future<Category> updateOrCreate(Category object) async {
+    if (object.id == null) {
+      object = object.copyWith(id: await client.generateID());
     }
-    await client.write(
-      key: category.id!,
-      value: category.toMap(),
+    await client.updateOrCreate(
+      key: object.id,
+      value: object.toMap(),
     );
-    return category;
+    return object;
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(int id) {
     return client.delete(key: id);
   }
 
   @override
   Future<List<Category>> allDefaultCategories() async {
-    final list = await client.readAll();
-    final categories = list.map((map) => Category.fromMap(map)).toList();
-    return categories.where((category) => category.isDefault ?? false).toList();
+    final list = await all();
+    return list.where((category) => category.isDefault).toList();
   }
 
   @override

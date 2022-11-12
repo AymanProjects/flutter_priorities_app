@@ -6,7 +6,7 @@ class ClosePageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HorizonIconButton(
+    return HorizonThinButton(
       onPressed: Navigator.of(context).pop,
       icon: Icons.arrow_back_ios,
     );

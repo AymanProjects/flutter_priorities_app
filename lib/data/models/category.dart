@@ -2,18 +2,18 @@
 import 'dart:convert';
 
 class Category {
-  final String? id;
-  final String? title;
-  final bool? isDefault;
+  final int? id;
+  final String title;
+  final bool isDefault;
 
   const Category({
     this.id,
-    this.title,
-    this.isDefault,
+    required this.title,
+    required this.isDefault,
   });
 
   Category copyWith({
-    String? id,
+    int? id,
     String? title,
     bool? isDefault,
   }) {
@@ -34,9 +34,9 @@ class Category {
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
-      id: map['id'] != null ? map['id'] as String : null,
-      title: map['title'] != null ? map['title'] as String : null,
-      isDefault: map['isDefault'] != null ? map['isDefault'] as bool : null,
+      id: map['id'] as int?,
+      title: map['title'] as String? ?? 'Untitled',
+      isDefault: map['isDefault'] as bool? ?? false,
     );
   }
 

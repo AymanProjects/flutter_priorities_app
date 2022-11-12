@@ -1,88 +1,52 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
-import 'package:priorities/data/models/category.dart';
-import 'package:priorities/data/models/task.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class Priority {
-  final String? id;
-  final String? emoji;
-  final String? title;
-  final int? colorId;
-  final List<Category>? categories;
-  final List<Task>? tasks;
-
-  static const defaultEmoji = '📃';
-  static const defaultTitle = 'New';
-  static const defaultColorId = 0;
+  final int? id;
+  final String emoji;
+  final String title;
+  final int colorId;
+  final List<int> categoryIDs;
+  final List<int> taskIDs;
 
   const Priority({
-    this.id,
-    this.emoji,
-    this.title,
-    this.colorId,
-    this.categories,
-    this.tasks,
+    required this.id,
+    required this.emoji,
+    required this.title,
+    required this.colorId,
+    required this.categoryIDs,
+    required this.taskIDs,
   });
 
-  Color get color => kCardColors[colorId ?? defaultColorId];
-
-  double get progress {
-    if (tasks == null || tasks!.isEmpty) {
-      return 0.0;
-    }
-    return completedTasks() / tasks!.length;
-  }
-
-  int completedTasks() {
-    int numOfCompletedTasks = 0;
-    for (Task task in tasks ?? []) {
-      if (task.isCompleted ?? false) {
-        numOfCompletedTasks++;
-      }
-    }
-    return numOfCompletedTasks;
-  }
+  Color get color => kCardColors[colorId];
 
   Priority copyWith({
-    String? id,
+    int? id,
     String? emoji,
     String? title,
     int? colorId,
-    List<Category>? categories,
-    List<Task>? tasks,
+    List<int>? categoryIDs,
+    List<int>? taskIDs,
   }) {
     return Priority(
       id: id ?? this.id,
       emoji: emoji ?? this.emoji,
       title: title ?? this.title,
       colorId: colorId ?? this.colorId,
-      categories: categories ?? this.categories,
-      tasks: tasks ?? this.tasks,
+      categoryIDs: categoryIDs ?? this.categoryIDs,
+      taskIDs: taskIDs ?? this.taskIDs,
     );
   }
 
   factory Priority.fromMap(Map<String, dynamic> map) {
     return Priority(
-      id: map['id'] != null ? map['id'] as String : null,
-      emoji: map['emoji'] != null ? map['emoji'] as String : null,
-      title: map['title'] != null ? map['title'] as String : null,
-      colorId: map['colorId'] != null ? map['colorId'] as int : null,
-      categories: map['categories'] != null
-          ? List<Category>.from(
-              (map['categories'] as List).map<Category?>(
-                (x) => Category.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
-      tasks: map['tasks'] != null
-          ? List<Task>.from(
-              (map['tasks'] as List).map<Task?>(
-                (x) => Task.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+      id: map['id'] as int?,
+      emoji: map['emoji'] as String? ?? '📔',
+      title: map['title'] as String? ?? 'New',
+      colorId: map['colorId'] as int? ?? 0,
+      categoryIDs: List<int>.from(map['categoryIDs'] ?? []),
+      taskIDs: List<int>.from(map['taskIDs'] ?? []),
     );
   }
 
@@ -92,8 +56,8 @@ class Priority {
       'emoji': emoji,
       'title': title,
       'colorId': colorId,
-      'categories': categories?.map((x) => x.toMap()).toList(),
-      'tasks': tasks?.map((x) => x.toMap()).toList(),
+      'categoryIDs': categoryIDs,
+      'taskIDs': taskIDs,
     };
   }
 
@@ -104,7 +68,7 @@ class Priority {
 
   @override
   String toString() {
-    return 'Priority(id: $id, emoji: $emoji, title: $title, colorId: $colorId, categories: $categories, tasks: $tasks)';
+    return 'Priority(id: $id, emoji: $emoji, title: $title, colorId: $colorId, categoryIDs: $categoryIDs, taskIDs: $taskIDs)';
   }
 
   @override
@@ -123,7 +87,7 @@ class Priority {
         emoji.hashCode ^
         title.hashCode ^
         colorId.hashCode ^
-        categories.hashCode ^
-        tasks.hashCode;
+        categoryIDs.hashCode ^
+        taskIDs.hashCode;
   }
 }

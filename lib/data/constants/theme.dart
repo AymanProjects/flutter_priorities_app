@@ -9,6 +9,7 @@ final kLightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primarySwatch: _createMaterialColor(kAppColor),
   splashColor: Colors.transparent,
+  splashFactory: NoSplash.splashFactory,
   highlightColor: Colors.transparent,
   iconTheme: const IconThemeData(color: Colors.grey),
   bottomSheetTheme: const BottomSheetThemeData(

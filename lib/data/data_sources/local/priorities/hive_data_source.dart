@@ -1,5 +1,6 @@
 import 'package:priorities/domain/data/data_sources/priorities_data_source.dart';
 import 'package:priorities/data/clients/hive_client.dart';
+import 'package:priorities/data/models/category.dart';
 import 'package:priorities/data/models/priority.dart';
 
 class HivePrioritiesLocalDataSource implements PrioritiesDataSource {
@@ -8,41 +9,54 @@ class HivePrioritiesLocalDataSource implements PrioritiesDataSource {
   const HivePrioritiesLocalDataSource();
 
   @override
-  Future<Priority> find(String id) async {
-    final map = await client.read(
-      key: id,
+  Future<Priority> find(int id) async {
+    final map = Map<String, dynamic>.from(
+      await client.find(key: id),
     );
     return Priority.fromMap(map);
   }
 
   @override
+  Future<List<Priority>> findMany(Set<int> ids) async {
+    final allRecords = await all();
+    return allRecords.where((element) => ids.contains(element.id)).toList();
+  }
+
+  @override
   Future<List<Priority>> all() async {
-    final list = await client.readAll();
-    return list
-        .map((map) => Priority.fromMap(Map<String, dynamic>.from(map)))
-        .toList();
+    final list = await client.all();
+    final listOfMaps = list.map((e) => Map<String, dynamic>.from(e)).toList();
+    return listOfMaps.map((map) => Priority.fromMap(map)).toList();
   }
 
   @override
-  Future<Priority> updateOrCreate(Priority priority) async {
-    if (priority.id == null) {
-      final id = await client.generateID();
-      priority = priority.copyWith(id: id);
+  Future<Priority> updateOrCreate(Priority object) async {
+    if (object.id == null) {
+      object = object.copyWith(id: await client.generateID());
     }
-    await client.write(
-      key: priority.id!,
-      value: priority.toMap(),
+    await client.updateOrCreate(
+      key: object.id,
+      value: object.toMap(),
     );
-    return priority;
+    return object;
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(int id) {
     return client.delete(key: id);
   }
 
   @override
   Future<void> deleteAll() {
     return client.deleteAll();
+  }
+
+  @override
+  Future<List<Priority>> allWithin(Category category) async {
+    final allRecords = await all();
+    return [
+      for (final element in allRecords)
+        if (element.categoryIDs.any((e) => e == category.id)) element,
+    ];
   }
 }
