@@ -33,6 +33,8 @@ class AppRouter {
   Future<String?> openTextFieldDialog(String title, String hint,
       {bool dismissable = true}) async {
     String? result;
+    final focusNode = FocusNode();
+    focusNode.requestFocus();
     await showDialog(
       context: navigatorKey.currentContext!,
       barrierDismissible: dismissable,
@@ -56,6 +58,7 @@ class AppRouter {
               ),
               const SizedBox(height: 12.0),
               TextFormField(
+                focusNode: focusNode,
                 decoration: InputDecoration(
                   hintText: hint,
                   border: InputBorder.none,
@@ -72,6 +75,7 @@ class AppRouter {
         ),
       ),
     );
+    focusNode.dispose();
     return result;
   }
 
