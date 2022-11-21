@@ -26,7 +26,7 @@ class AppRouter {
   Future<T?> openModal<T>(Widget modal) {
     return showModalBottomSheet<T>(
       context: navigatorKey.currentContext!,
-      builder: (context) => modal,
+      builder: (context) => Scaffold(body: modal),
     );
   }
 
