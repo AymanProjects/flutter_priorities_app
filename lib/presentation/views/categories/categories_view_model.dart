@@ -1,32 +1,19 @@
-import 'package:priorities/data/repositories/categories_repo.dart';
-import 'package:priorities/services/app_notifier.dart';
+import 'package:priorities/presentation/views/categories/providers/categories_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/category.dart';
-import 'package:priorities/services/app_router.dart';
+import 'package:priorities/services/navigation_service.dart';
 import 'package:priorities/injection.dart';
-import 'package:stacked/stacked.dart';
 
-class CategroiesViewModel extends BaseViewModel {
-  List<Category> categories = [];
-
-  void init() {
-    _loadCategories();
-  }
-
-  Future<void> _loadCategories() async {
-    runBusyFuture<void>(
-      Future(() async {
-        categories = await locator<CategoriesRepository>().all();
-      }),
-    ).catchError((error) => locator<AppNotifier>().showError(error.toString()));
-  }
+class CategroiesViewModel {
+  const CategroiesViewModel();
 
   void onCategorySelected(Category category) {
-    locator<AppRouter>().closeCurrentPage(category);
+    locator<NavigationService>().closeCurrentPage(category);
   }
 
-  void createCategory(context) async {
+  void onCreateCategoryPressed(WidgetRef ref) async {
     // Get name from user via textfield
-    final result = await locator<AppRouter>().openTextFieldDialog(
+    final result = await locator<NavigationService>().openTextFieldDialog(
       'Enter Category Name',
       'New Category',
     );
@@ -40,14 +27,10 @@ class CategroiesViewModel extends BaseViewModel {
       isDefault: false,
     );
     // save the category & reload
-    runBusyFuture<void>(Future<Category>(() {
-      return locator<CategoriesRepository>().updateOrCreate(category);
-    }))
-        .then((value) => _loadCategories())
-        .catchError((error) => locator<AppNotifier>().showError(error));
+    return ref.read(categoriesProvider.notifier).createCategory(category);
   }
 
-  void onClosePage() {
-    locator<AppRouter>().closeCurrentPage();
+  void onClosePagePressed() {
+    locator<NavigationService>().closeCurrentPage();
   }
 }

@@ -3,11 +3,11 @@ import 'package:priorities/data/models/category.dart';
 import 'package:priorities/data/repositories/categories_repo.dart';
 import 'package:priorities/injection.dart';
 
-class UserPrefs {
+class UserPrefsService {
   final client = const HiveStorageClient(boxName: 'user_prefs');
   final selectedCategoryKey = 'selectedCategory';
 
-  const UserPrefs();
+  const UserPrefsService();
 
   Future<Category> lastSelectedCategory() async {
     final result = await client.find(key: selectedCategoryKey);

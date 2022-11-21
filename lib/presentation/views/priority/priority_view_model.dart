@@ -2,8 +2,8 @@ import 'package:priorities/data/repositories/priorities_repo.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:priorities/data/models/priority.dart';
-import 'package:priorities/services/app_notifier.dart';
-import 'package:priorities/services/app_router.dart';
+import 'package:priorities/services/notifications_service.dart';
+import 'package:priorities/services/navigation_service.dart';
 import 'package:priorities/injection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
@@ -46,10 +46,11 @@ class PriorityViewModel extends BaseViewModel {
     if (formKey.currentState?.validate() ?? false) {
       runBusyFuture(_createOrUpdatePriority())
           .then(
-            (value) => locator<AppRouter>().closeCurrentPage(value),
+            (value) => locator<NavigationService>().closeCurrentPage(value),
           )
           .catchError(
-            (error) => locator<AppNotifier>().showError(error.toString()),
+            (error) =>
+                locator<NotificationsService>().showError(error.toString()),
           );
     }
   }

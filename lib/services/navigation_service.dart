@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 /// Put the `AppRouter.navigationKey` inside the MaterialApp.
 ///
 
-class AppRouter {
+class NavigationService {
   static final navigatorKey = GlobalKey<NavigatorState>();
-  const AppRouter();
+  const NavigationService();
 
   Future<T?>? openPage<T>(Widget page) {
     return navigatorKey.currentState?.push<T>(

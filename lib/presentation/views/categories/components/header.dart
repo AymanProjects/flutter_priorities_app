@@ -1,22 +1,20 @@
 import 'package:priorities/presentation/views/categories/categories_view_model.dart';
 import 'package:priorities/presentation/__components/horizon_icon_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/constants/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
-class CategoriesViewHeader extends ViewModelWidget<CategroiesViewModel> {
-  const CategoriesViewHeader({super.key});
-
-  @override
-  bool get reactive => false;
+class CategoriesViewHeader extends ConsumerWidget {
+  final CategroiesViewModel viewModel;
+  const CategoriesViewHeader(this.viewModel, {super.key});
 
   @override
-  Widget build(BuildContext context, viewModel) {
+  Widget build(BuildContext context, ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         HorizonThinButton(
-          onPressed: viewModel.onClosePage,
+          onPressed: viewModel.onClosePagePressed,
           icon: Icons.close_sharp,
         ),
         const Text(
@@ -27,7 +25,7 @@ class CategoriesViewHeader extends ViewModelWidget<CategroiesViewModel> {
           ),
         ),
         HorizonThinButton(
-          onPressed: () => viewModel.createCategory(context),
+          onPressed: () => viewModel.onCreateCategoryPressed(ref),
           icon: Icons.add_rounded,
           iconColor: kAppColor,
         ),

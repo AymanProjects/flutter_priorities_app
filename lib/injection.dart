@@ -5,9 +5,9 @@ import 'package:priorities/data/repositories/categories_repo.dart';
 import 'package:priorities/data/repositories/priorities_repo.dart';
 import 'package:priorities/data/repositories/tasks_repository.dart';
 import 'package:priorities/data/clients/hive_client.dart';
-import 'package:priorities/services/app_notifier.dart';
-import 'package:priorities/services/app_router.dart';
-import 'package:priorities/services/user_prefs.dart';
+import 'package:priorities/services/notifications_service.dart';
+import 'package:priorities/services/navigation_service.dart';
+import 'package:priorities/services/user_prefs_service.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
@@ -21,9 +21,9 @@ final locator = GetIt.instance;
 Future<void> injectDependencies() async {
   // Initialize the dependencies
   await HiveStorageClient.init();
-  const router = AppRouter();
-  const notifier = AppNotifier();
-  const userPrefs = UserPrefs();
+  const router = NavigationService();
+  const notifier = NotificationsService();
+  const userPrefs = UserPrefsService();
   const categoriesRepo = CategoriesRepository(
     localSource: HiveCategoriesLocalDataSource(),
   );
@@ -36,9 +36,9 @@ Future<void> injectDependencies() async {
   );
 
   // Register the dependencies
-  locator.registerSingleton<AppRouter>(router);
-  locator.registerSingleton<AppNotifier>(notifier);
-  locator.registerSingleton<UserPrefs>(userPrefs);
+  locator.registerSingleton<NavigationService>(router);
+  locator.registerSingleton<NotificationsService>(notifier);
+  locator.registerSingleton<UserPrefsService>(userPrefs);
   locator.registerSingleton<CategoriesRepository>(categoriesRepo);
   locator.registerSingleton<PrioritiesRepository>(prioritiesRepo);
   locator.registerSingleton<TasksRepository>(tasksRepo);

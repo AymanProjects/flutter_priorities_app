@@ -12,7 +12,8 @@ dependencies:
 
   # For state management 
   stacked: ^3.0.0
-
+  flutter_riverpod: ^2.1.1
+  
   # Local storage
   hive: ^2.2.3
 

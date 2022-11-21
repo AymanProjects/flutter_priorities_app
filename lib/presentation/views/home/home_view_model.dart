@@ -4,9 +4,9 @@ import 'package:priorities/data/repositories/priorities_repo.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:priorities/data/models/priority.dart';
 import 'package:priorities/data/models/category.dart';
-import 'package:priorities/services/app_notifier.dart';
-import 'package:priorities/services/app_router.dart';
-import 'package:priorities/services/user_prefs.dart';
+import 'package:priorities/services/notifications_service.dart';
+import 'package:priorities/services/navigation_service.dart';
+import 'package:priorities/services/user_prefs_service.dart';
 import 'package:priorities/injection.dart';
 import 'package:stacked/stacked.dart';
 
@@ -20,7 +20,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> _changeSelectedCategory(Category category) async {
-    await locator<UserPrefs>().updateLastSelectedCategory(category);
+    await locator<UserPrefsService>().updateLastSelectedCategory(category);
     selectedCategory = category;
     _loadPriorities();
   }
@@ -28,33 +28,35 @@ class HomeViewModel extends BaseViewModel {
   Future<void> _loadPriorities() async {
     runBusyFuture<void>(
       Future(() async {
-        selectedCategory ??= await locator<UserPrefs>().lastSelectedCategory();
+        selectedCategory ??=
+            await locator<UserPrefsService>().lastSelectedCategory();
         priorities =
             await locator<PrioritiesRepository>().allWithin(selectedCategory!);
         priorities.sort((a, b) => b.id!.compareTo(a.id!));
       }),
       busyObject: priorities,
-    ).catchError((error) => locator<AppNotifier>().showError(error.toString()));
+    ).catchError(
+        (error) => locator<NotificationsService>().showError(error.toString()));
   }
 
   void createPriorityButtonOnTap() async {
-    final result =
-        await locator<AppRouter>().openPage<Priority>(const PriorityView(null));
+    final result = await locator<NavigationService>()
+        .openPage<Priority>(const PriorityView(null));
     if (result != null) {
       _loadPriorities();
     }
   }
 
   void selectedCategoryButtonOnTap() async {
-    final result =
-        await locator<AppRouter>().openModal<Category?>(const CategoriesView());
+    final result = await locator<NavigationService>()
+        .openModal<Category?>(const CategoriesView());
     if (result != null) {
       await _changeSelectedCategory(result);
     }
   }
 
   void priorityBlockOnTap(Priority currentPriority) async {
-    final updatedPriority = await locator<AppRouter>()
+    final updatedPriority = await locator<NavigationService>()
         .openPage<Priority>(PriorityView(currentPriority));
     if (updatedPriority != currentPriority) {
       _loadPriorities();
