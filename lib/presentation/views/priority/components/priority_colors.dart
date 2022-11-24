@@ -1,19 +1,23 @@
+// ignore_for_file: invalid_use_of_protected_member
 import 'package:priorities/presentation/views/priority/priority_view_model.dart';
+import 'package:priorities/presentation/views/priority/providers/currently_viewed_priority.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
-class PriorityColors extends ViewModelWidget<PriorityViewModel> {
+class PriorityColors extends ConsumerWidget {
   const PriorityColors({super.key});
 
   @override
-  Widget build(BuildContext context, viewModel) {
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.read(priorityViewModelProvider);
+    final priority = ref.watch(currentlyViewedPriorityProvider).valueOrNull;
     return ListView.builder(
       itemCount: kCardColors.length,
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final isSelected = viewModel.selectedColor == index;
+        final isSelected = priority?.colorId == index;
         return ChoiceChip(
           pressElevation: 0,
           shape: CircleBorder(
@@ -28,7 +32,7 @@ class PriorityColors extends ViewModelWidget<PriorityViewModel> {
           padding: EdgeInsets.zero,
           labelPadding: EdgeInsets.zero,
           label: const SizedBox(width: 30.0),
-          onSelected: (_) => viewModel.setSelectedColor(index),
+          onSelected: (_) => viewModel.changeSelectedColor(index),
         );
       },
     );

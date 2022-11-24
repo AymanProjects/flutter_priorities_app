@@ -1,75 +1,84 @@
-import 'package:priorities/data/repositories/priorities_repo.dart';
+import 'package:priorities/presentation/views/priority/providers/currently_viewed_priority.dart';
+import 'package:priorities/presentation/views/priority/providers/emoji_keyboard_visiblity.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:priorities/data/constants/ui_constants.dart';
-import 'package:priorities/data/models/priority.dart';
-import 'package:priorities/services/notifications_service.dart';
-import 'package:priorities/services/navigation_service.dart';
-import 'package:priorities/injection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:stacked/stacked.dart';
-import 'dart:math';
 
-//  Logic code only
+final prioritiesViewModelFormKeyProvider = AutoDisposeProvider(
+  (ref) => GlobalKey<FormState>(),
+);
 
-class PriorityViewModel extends BaseViewModel {
-  Priority? priority;
-  late String selectedEmoji;
-  late int selectedColor;
-  late List<int> categoryIDs;
-  late List<int> taskIDs;
+final priorityViewModelProvider = Provider.autoDispose(
+  (ref) => _PriorityViewModel(ref),
+);
 
-  final formKey = GlobalKey<FormState>();
-  final titleController = TextEditingController();
+class _PriorityViewModel {
+  final Ref ref;
   final textKeyboardNode = FocusNode();
+  late final TextEditingController titleController;
 
-  bool isEmojiKeyboardShowing = false;
-
-  PriorityViewModel(this.priority);
-
-  void init() {
-    selectedColor = priority?.colorId ?? Random().nextInt(kCardColors.length);
-    titleController.text = priority?.title ?? '';
-    selectedEmoji = '📔';
-    categoryIDs = priority?.categoryIDs ?? <int>[];
-    taskIDs = priority?.taskIDs ?? <int>[];
-
+  _PriorityViewModel(this.ref) {
     textKeyboardNode.addListener(() {
       if (textKeyboardNode.hasFocus) {
         closeEmojiKeyboard();
       }
     });
+    titleController = TextEditingController(
+        text: ref.read(currentlyViewedPriorityProvider).value?.title);
   }
 
-  bool get isEditingMode => priority != null;
+  bool get isEditingMode =>
+      ref.read(currentlyViewedPriorityProvider).value?.id != null;
 
   void onCreateOrConfirmButtonPressed() async {
-    if (formKey.currentState?.validate() ?? false) {
-      runBusyFuture(_createOrUpdatePriority())
-          .then(
-            (value) => locator<NavigationService>().closeCurrentPage(value),
-          )
-          .catchError(
-            (error) =>
-                locator<NotificationsService>().showError(error.toString()),
-          );
+    final key = ref.read(prioritiesViewModelFormKeyProvider);
+    if (key.currentState?.validate() ?? false) {
+      closeKeyboard();
+      ref
+          .read(currentlyViewedPriorityProvider.notifier)
+          .createOrUpdatePriority();
     }
   }
 
-  Future<Priority> _createOrUpdatePriority() {
-    final updatedPriority = Priority(
-      id: priority?.id,
-      colorId: selectedColor,
-      categoryIDs: categoryIDs,
-      taskIDs: taskIDs,
-      emoji: selectedEmoji,
-      title: titleController.text,
-    );
-    return locator<PrioritiesRepository>().updateOrCreate(updatedPriority);
+  void onEmojiIconPressed() async {
+    closeKeyboard();
+    await Future.delayed(const Duration(milliseconds: 250));
+    openEmojiKeyboard();
   }
 
-  void setSelectedColor(int index) {
-    selectedColor = index;
-    notifyListeners();
+  void closeKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  void onEmojiSelected(_, Emoji emoji) {
+    changeSelectedEmoji(emoji.emoji);
+    closeEmojiKeyboard();
+  }
+
+  void onTitlechanged(String title) {
+    ref.read(currentlyViewedPriorityProvider.notifier).setPriority(
+          (priority) => priority.copyWith(title: titleController.text),
+        );
+  }
+
+  void changeSelectedColor(int index) {
+    ref.read(currentlyViewedPriorityProvider.notifier).setPriority(
+          (priority) => priority.copyWith(colorId: index),
+        );
+  }
+
+  void changeSelectedEmoji(String emoji) {
+    ref.read(currentlyViewedPriorityProvider.notifier).setPriority(
+          (priority) => priority.copyWith(emoji: emoji),
+        );
+  }
+
+  void closeEmojiKeyboard() {
+    ref.read(emojiKeyboardVisibilityProvider.notifier).closeEmojiKeyboard();
+  }
+
+  void openEmojiKeyboard() {
+    ref.read(emojiKeyboardVisibilityProvider.notifier).openEmojiKeyboard();
   }
 
   String? titleValidator(String? value) {
@@ -77,24 +86,5 @@ class PriorityViewModel extends BaseViewModel {
       return 'Title must be provided';
     }
     return null;
-  }
-
-  void onEmojiIconPressed() async {
-    if (textKeyboardNode.hasFocus) {
-      FocusManager.instance.primaryFocus?.unfocus();
-      await Future.delayed(const Duration(milliseconds: 250));
-    }
-    isEmojiKeyboardShowing = true;
-    notifyListeners();
-  }
-
-  void onEmojiSelected(_, Emoji emoji) {
-    selectedEmoji = emoji.emoji;
-    closeEmojiKeyboard();
-  }
-
-  void closeEmojiKeyboard() {
-    isEmojiKeyboardShowing = false;
-    notifyListeners();
   }
 }

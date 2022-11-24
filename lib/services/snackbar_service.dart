@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 /// A service for showing snackbar messages to the user.
 ///
-/// Put the `Notifier.messengerKey` inside the MaterialApp.
+/// Put the `messengerKey` inside the MaterialApp.
 ///
 
-class NotificationsService {
+class SnackBarService {
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
-  const NotificationsService();
+  const SnackBarService();
 
   void showError(String error) {
     final snack = SnackBar(

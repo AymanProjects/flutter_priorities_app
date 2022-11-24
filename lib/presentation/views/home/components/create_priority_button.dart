@@ -1,16 +1,14 @@
-import 'package:priorities/presentation/views/home/home_view_model.dart';
 import 'package:priorities/presentation/__components/horizon_button.dart';
+import 'package:priorities/presentation/views/home/home_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
-class CreatePriorityButton extends ViewModelWidget<HomeViewModel> {
+class CreatePriorityButton extends ConsumerWidget {
   const CreatePriorityButton({super.key});
 
   @override
-  bool get reactive => false;
-
-  @override
-  Widget build(BuildContext context, viewModel) {
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.read(homeViewModelProvider);
     return HorizonButton(
       onPressed: viewModel.createPriorityButtonOnTap,
       icon: Icons.add_rounded,

@@ -5,11 +5,11 @@ import 'package:priorities/data/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesViewHeader extends ConsumerWidget {
-  final CategroiesViewModel viewModel;
-  const CategoriesViewHeader(this.viewModel, {super.key});
+  const CategoriesViewHeader({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
+    final viewModel = ref.read(categroiesViewModelProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -25,7 +25,7 @@ class CategoriesViewHeader extends ConsumerWidget {
           ),
         ),
         HorizonThinButton(
-          onPressed: () => viewModel.onCreateCategoryPressed(ref),
+          onPressed: viewModel.onCreateCategoryPressed,
           icon: Icons.add_rounded,
           iconColor: kAppColor,
         ),

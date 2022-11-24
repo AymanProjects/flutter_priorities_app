@@ -1,3 +1,5 @@
+import 'package:priorities/observers/errors_observer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:priorities/app.dart';
@@ -10,5 +12,10 @@ void main() async {
   // await (await Hive.openBox('categories')).clear();
   // await (await Hive.openBox('tasks')).clear();
   // await (await Hive.openBox('user_prefs')).clear();
-  runApp(const App());
+  runApp(
+    ProviderScope(
+      observers: [ErrorsObserver()],
+      child: const App(),
+    ),
+  );
 }

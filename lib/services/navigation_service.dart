@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// A service for navigating between pages in the app.
 ///
-/// Put the `AppRouter.navigationKey` inside the MaterialApp.
+/// Put the `navigationKey` inside the MaterialApp.
 ///
 
 class NavigationService {

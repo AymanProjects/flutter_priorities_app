@@ -1,17 +1,26 @@
 import 'package:priorities/presentation/views/categories/providers/categories_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/category.dart';
+import 'package:priorities/presentation/views/home/providers/selected_category_provider.dart';
 import 'package:priorities/services/navigation_service.dart';
 import 'package:priorities/injection.dart';
 
-class CategroiesViewModel {
-  const CategroiesViewModel();
+final categroiesViewModelProvider = Provider.autoDispose(
+  (ref) => _CategroiesViewModel(ref),
+);
+
+class _CategroiesViewModel {
+  final Ref ref;
+  const _CategroiesViewModel(this.ref);
 
   void onCategorySelected(Category category) {
+    ref
+        .read(selectedCategoryProvider.notifier)
+        .changeSelectedCategory(category);
     locator<NavigationService>().closeCurrentPage(category);
   }
 
-  void onCreateCategoryPressed(WidgetRef ref) async {
+  void onCreateCategoryPressed() async {
     // Get name from user via textfield
     final result = await locator<NavigationService>().openTextFieldDialog(
       'Enter Category Name',
