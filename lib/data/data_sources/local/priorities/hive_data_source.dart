@@ -13,7 +13,7 @@ class HivePrioritiesLocalDataSource implements PrioritiesDataSource {
     final map = Map<String, dynamic>.from(
       await client.find(key: id),
     );
-    return Priority.fromMap(map);
+    return Priority.fromJson(map);
   }
 
   @override
@@ -26,17 +26,17 @@ class HivePrioritiesLocalDataSource implements PrioritiesDataSource {
   Future<List<Priority>> all() async {
     final list = await client.all();
     final listOfMaps = list.map((e) => Map<String, dynamic>.from(e)).toList();
-    return listOfMaps.map((map) => Priority.fromMap(map)).toList();
+    return listOfMaps.map((map) => Priority.fromJson(map)).toList();
   }
 
   @override
-  Future<Priority> updateOrCreate(Priority object) async {
+  Future<Priority> createOrUpdate(Priority object) async {
     if (object.id == null) {
       object = object.copyWith(id: await client.generateID());
     }
     await client.updateOrCreate(
       key: object.id,
-      value: object.toMap(),
+      value: object.toJson(),
     );
     return object;
   }
@@ -52,11 +52,11 @@ class HivePrioritiesLocalDataSource implements PrioritiesDataSource {
   }
 
   @override
-  Future<List<Priority>> allWithin(Category category) async {
+  Future<List<Priority>> prioritiesOf(Category category) async {
     final allRecords = await all();
     return [
       for (final element in allRecords)
-        if (element.categoryIDs.any((e) => e == category.id)) element,
+        if (element.categories.any((e) => e.id == category.id)) element,
     ];
   }
 }

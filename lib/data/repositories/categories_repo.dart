@@ -1,8 +1,8 @@
-import 'package:priorities/data/models/category.dart';
-import 'package:priorities/domain/data/data_apis/categories_data_apis.dart';
 import 'package:priorities/domain/data/data_sources/categories_data_source.dart';
+import 'package:priorities/domain/data/repos/categories_repo.dart';
+import 'package:priorities/data/models/category.dart';
 
-class CategoriesRepository implements CategoriesDataAPIS {
+class CategoriesRepository implements ICategoriesRepo {
   final CategoriesDataSource localSource;
 
   const CategoriesRepository({required this.localSource});
@@ -28,8 +28,8 @@ class CategoriesRepository implements CategoriesDataAPIS {
   }
 
   @override
-  Future<Category> updateOrCreate(Category category) {
-    return localSource.updateOrCreate(category);
+  Future<Category> createOrUpdate(Category category) {
+    return localSource.createOrUpdate(category);
   }
 
   @override
@@ -38,7 +38,7 @@ class CategoriesRepository implements CategoriesDataAPIS {
   }
 
   @override
-  Future<List<T>> allDefaultCategories() {
+  Future<List<Category>> allDefaultCategories() {
     return localSource.allDefaultCategories();
   }
 

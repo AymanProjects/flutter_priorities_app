@@ -1,7 +1,6 @@
-import 'package:priorities/data/repositories/categories_repo.dart';
+import 'package:priorities/providers/repo_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/category.dart';
-import 'package:priorities/injection.dart';
 import 'dart:async';
 
 final categoriesProvider =
@@ -12,14 +11,14 @@ final categoriesProvider =
 class _CategroiesNotifier extends AsyncNotifier<List<Category>> {
   @override
   FutureOr<List<Category>> build() {
-    return locator<CategoriesRepository>().all();
+    return ref.read(categoriesRepoProvider).all();
   }
 
-  void createCategory(Category category) async {
+  void createOrUpdateCategory(Category category) async {
     state = const AsyncLoading();
     try {
       final created =
-          await locator<CategoriesRepository>().updateOrCreate(category);
+          await ref.read(categoriesRepoProvider).createOrUpdate(category);
       // merge the new created item + the old items
       state = AsyncData([
         created,

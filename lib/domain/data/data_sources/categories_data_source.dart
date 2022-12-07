@@ -1,5 +1,5 @@
-import 'package:priorities/domain/data/data_apis/categories_data_apis.dart';
+import 'package:priorities/domain/data/repos/categories_repo.dart';
 
-abstract class CategoriesDataSource implements CategoriesDataAPIS {
+abstract class CategoriesDataSource implements ICategoriesRepo {
   const CategoriesDataSource();
 }

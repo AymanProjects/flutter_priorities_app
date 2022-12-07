@@ -17,19 +17,22 @@ class PrioritiesGrid extends ConsumerWidget {
       loading: () => const CenteredLoadingIndicator(),
       error: (error, stackTrace) => const EmptyPrioritiesGrid(),
       data: (priorities) {
-        return GridView.count(
-          childAspectRatio: kLgBlockAspectRatio,
-          shrinkWrap: true,
-          crossAxisCount: 2,
-          mainAxisSpacing: kLgPadding,
-          crossAxisSpacing: kLgPadding,
-          padding: const EdgeInsets.symmetric(vertical: kSmPadding),
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
+        return RefreshIndicator(
+          onRefresh: () async => ref.refresh(homePrioritiesProvider.future),
+          child: GridView.count(
+            childAspectRatio: kLgBlockAspectRatio,
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            mainAxisSpacing: kLgPadding,
+            crossAxisSpacing: kLgPadding,
+            padding: const EdgeInsets.symmetric(vertical: kSmPadding),
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics(),
+            ),
+            children: priorities
+                .map((priority) => PriorityBlockView(priority))
+                .toList(),
           ),
-          children: priorities
-              .map((priority) => PriorityBlockView(priority))
-              .toList(),
         );
       },
     );

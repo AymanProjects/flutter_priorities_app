@@ -1,5 +1,5 @@
-import 'package:priorities/domain/data/data_apis/priorities_data_apis.dart';
+import 'package:priorities/domain/data/repos/priorities_repo.dart';
 
-abstract class PrioritiesDataSource implements PrioritiesDataAPIS {
+abstract class PrioritiesDataSource implements IPrioritiesRepo {
   const PrioritiesDataSource();
 }

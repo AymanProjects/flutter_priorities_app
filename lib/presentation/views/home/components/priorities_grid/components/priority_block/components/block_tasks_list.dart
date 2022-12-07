@@ -1,6 +1,7 @@
 import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:priorities/data/models/task.dart';
+import 'package:priorities/presentation/__components/centered_loading_indicator.dart';
 
 class BlockTasksList extends StatelessWidget {
   final List<Task>? tasks;
@@ -13,7 +14,7 @@ class BlockTasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return tasks == null
-        ? const Center(child: CircularProgressIndicator())
+        ? const CenteredLoadingIndicator.small()
         : ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -26,12 +27,12 @@ class BlockTasksList extends StatelessWidget {
                   top: kSmPadding,
                 ),
                 child: Text(
-                  '- ${task.content}',
+                  '- ${task.title}',
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.white70,
                   ),
                 ),
               );

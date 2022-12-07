@@ -1,5 +1,5 @@
-import 'package:priorities/domain/data/data_apis/tasks_data_apis.dart';
+import 'package:priorities/domain/data/repos/tasks_repo.dart';
 
-abstract class TasksDataSource implements TasksDataAPIS {
+abstract class TasksDataSource implements ITasksRepo {
   const TasksDataSource();
 }

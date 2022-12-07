@@ -1,6 +1,6 @@
+import 'package:priorities/presentation/views/home/components/priorities_grid/priorities_grid.dart';
 import 'package:priorities/presentation/views/home/components/selected_category_button.dart';
 import 'package:priorities/presentation/views/home/components/create_priority_button.dart';
-import 'package:priorities/presentation/views/home/components/priorities_grid/priorities_grid.dart';
 import 'package:priorities/presentation/views/home/components/options_button.dart';
 import 'package:priorities/presentation/__components/large_padding.dart';
 import 'package:priorities/presentation/__components/small_padding.dart';

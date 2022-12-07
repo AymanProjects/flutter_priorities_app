@@ -12,11 +12,6 @@ class HiveStorageClient<T> {
     Hive.init((await getApplicationDocumentsDirectory()).path);
   }
 
-  Stream<BoxEvent> onChange() async* {
-    final box = await Hive.openBox<T>(boxName);
-    yield* box.watch();
-  }
-
   Future<int> generateID() async {
     final box = await Hive.openBox<T>(boxName);
     return box.length + 1;

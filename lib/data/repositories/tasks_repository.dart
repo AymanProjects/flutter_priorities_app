@@ -1,20 +1,21 @@
 import 'package:priorities/domain/data/data_sources/tasks_data_source.dart';
-import 'package:priorities/domain/data/data_apis/tasks_data_apis.dart';
+import 'package:priorities/domain/data/repos/tasks_repo.dart';
 import 'package:priorities/data/models/priority.dart';
+import 'package:priorities/data/models/task.dart';
 
-class TasksRepository implements TasksDataAPIS {
+class TasksRepository implements ITasksRepo {
   final TasksDataSource localSource;
 
   const TasksRepository({required this.localSource});
 
   @override
-  Future<List<T>> all() {
+  Future<List<Task>> all() {
     return localSource.all();
   }
 
   @override
-  Future<List<T>> allWithin(Priority priority) {
-    return localSource.allWithin(priority);
+  Future<List<Task>> tasksOf(Priority priority) {
+    return localSource.tasksOf(priority);
   }
 
   @override
@@ -28,17 +29,17 @@ class TasksRepository implements TasksDataAPIS {
   }
 
   @override
-  Future<T> find(int id) {
+  Future<Task> find(int id) {
     return localSource.find(id);
   }
 
   @override
-  Future<List<T>> findMany(Set<int> ids) {
+  Future<List<Task>> findMany(Set<int> ids) {
     return localSource.findMany(ids);
   }
 
   @override
-  Future<T> updateOrCreate(T object) {
-    return localSource.updateOrCreate(object);
+  Future<Task> createOrUpdate(Task object) {
+    return localSource.createOrUpdate(object);
   }
 }

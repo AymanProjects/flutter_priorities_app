@@ -9,39 +9,42 @@ class HiveCategoriesLocalDataSource implements CategoriesDataSource {
 
   @override
   Future<void> initDefaultValues() async {
-    const defaultCategory0 = Category(title: 'Recent', isDefault: true, id: 1);
+    const defaultCategory1 = Category(title: 'Recent', isDefault: true, id: 1);
     await client.updateOrCreateMany(
-      values: {defaultCategory0.id: defaultCategory0.toMap()},
+      values: {defaultCategory1.id: defaultCategory1.toJson()},
     );
   }
 
   @override
   Future<Category> find(int id) async {
     final map = Map<String, dynamic>.from(await client.find(key: id));
-    return Category.fromMap(map);
+    return Category.fromJson(map);
   }
 
   @override
   Future<List<Category>> findMany(Set<int> ids) async {
     final allCategories = await all();
-    return allCategories.where((element) => ids.contains(element.id)).toList();
+    final records =
+        allCategories.where((element) => ids.contains(element.id)).toList();
+    return records;
   }
 
   @override
   Future<List<Category>> all() async {
     final list = await client.all();
     final listOfMaps = list.map((e) => Map<String, dynamic>.from(e)).toList();
-    return listOfMaps.map((map) => Category.fromMap(map)).toList();
+    final allRecords = listOfMaps.map((map) => Category.fromJson(map)).toList();
+    return allRecords;
   }
 
   @override
-  Future<Category> updateOrCreate(Category object) async {
+  Future<Category> createOrUpdate(Category object) async {
     if (object.id == null) {
       object = object.copyWith(id: await client.generateID());
     }
     await client.updateOrCreate(
       key: object.id,
-      value: object.toMap(),
+      value: object.toJson(),
     );
     return object;
   }

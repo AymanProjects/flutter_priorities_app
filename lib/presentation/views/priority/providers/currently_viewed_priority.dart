@@ -1,12 +1,14 @@
-import 'package:priorities/providers/repository_providers/priorities_provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:priorities/presentation/views/home/providers/home_priorities_provider.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
-import 'package:priorities/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/priority.dart';
-import 'package:priorities/injection.dart';
 import 'dart:math';
 
-final currentlyViewedPriorityProvider =
+import 'package:priorities/presentation/views/priority/providers/form_key.dart';
+import 'package:priorities/providers/service_providers.dart';
+
+final currentlyViewedPriority =
     AsyncNotifierProvider<_CurrentlyViewedPriorityNotifier, Priority>(
   () => _CurrentlyViewedPriorityNotifier(),
 );
@@ -19,32 +21,30 @@ class _CurrentlyViewedPriorityNotifier extends AsyncNotifier<Priority> {
       emoji: '📔',
       title: '',
       colorId: Random().nextInt(kCardColors.length),
-      categoryIDs: [],
-      taskIDs: [],
+      categories: [],
+      tasks: [],
     );
   }
 
-  bool get isEditingMode => state.value?.id != null;
+  bool get isInEditingMode => state.valueOrNull?.id != null;
 
   void setPriority(Priority Function(Priority oldData) callback) {
-    if (state.value != null) {
-      state = AsyncData(callback(state.value!));
-    }
+    update(callback);
   }
 
-  void createOrUpdatePriority() async {
-    try {
-      final priority = state.value;
-      if (priority != null) {
-        state = const AsyncLoading();
+  void createOrUpdate() async {
+    var priority = state.valueOrNull;
+    if (priority != null) {
+      state = const AsyncLoading();
+      final key = ref.read(priorityViewFormKey);
+      if (key.currentState?.validate() ?? false) {
+        FocusManager.instance.primaryFocus?.unfocus(); // closes keyboard
         await ref
-            .read(prioritiesRepoProvider.notifier)
-            .createOrUpdatePriority(priority);
-        state = AsyncData(priority);
-        locator<NavigationService>().closeCurrentPage();
+            .read(homePrioritiesProvider.notifier)
+            .createOrUpdate(priority);
+        ref.read(navigationServiceProvider).closeCurrentPage();
       }
-    } catch (error, st) {
-      state = AsyncError<Priority>(error, st).copyWithPrevious(state);
+      state = AsyncData(priority);
     }
   }
 }

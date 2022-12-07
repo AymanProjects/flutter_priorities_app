@@ -2,15 +2,16 @@ import 'package:priorities/presentation/views/home/components/priorities_grid/co
 import 'package:priorities/presentation/views/home/components/priorities_grid/components/priority_block/components/block_progress.dart';
 import 'package:priorities/presentation/views/home/components/priorities_grid/components/priority_block/components/block_tasks_list.dart';
 import 'package:priorities/presentation/views/home/components/priorities_grid/components/priority_block/components/block_title.dart';
-import 'package:priorities/presentation/views/home/components/priorities_grid/components/priority_block/priority_block_viewmodel.dart';
 import 'package:priorities/presentation/__components/medium_padding.dart';
 import 'package:priorities/presentation/__components/small_padding.dart';
 import 'package:priorities/presentation/__components/bottom_fader.dart';
 import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/priority.dart';
-import 'package:priorities/data/constants/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:priorities/presentation/views/priority/priority_view.dart';
+import 'package:priorities/presentation/views/priority/providers/currently_viewed_priority.dart';
+import 'package:priorities/providers/service_providers.dart';
 
 class PriorityBlockView extends ConsumerWidget {
   final Priority priority;
@@ -18,21 +19,12 @@ class PriorityBlockView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final viewModel = ref.read(priorityBlockViewModelProvider(priority));
     return GestureDetector(
-      onTap: viewModel.priorityBlockOnTap,
+      onTap: () => priorityBlockOnTap(ref),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(kBorderRadius),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              lightenColor(priority.color),
-              priority.color,
-              darkenColor(priority.color),
-            ],
-          ),
+          color: priority.color,
         ),
         child: BottomFader(
           child: Padding(
@@ -46,13 +38,13 @@ class PriorityBlockView extends ConsumerWidget {
                   children: [
                     BlockEmoji(priority.emoji),
                     const SmallPadding(),
-                    BlockProgress(viewModel.getProgress()),
+                    BlockProgress(priority.tasks),
                   ],
                 ),
                 const MediumPadding(),
                 BlockTitle(priority.title),
                 Expanded(
-                  child: BlockTasksList(viewModel.tasks),
+                  child: BlockTasksList(priority.tasks),
                 ),
               ],
             ),
@@ -60,5 +52,10 @@ class PriorityBlockView extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void priorityBlockOnTap(WidgetRef ref) async {
+    ref.read(currentlyViewedPriority.notifier).setPriority((_) => priority);
+    ref.read(navigationServiceProvider).openPage(const PriorityView());
   }
 }

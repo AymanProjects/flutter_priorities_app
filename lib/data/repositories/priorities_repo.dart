@@ -1,11 +1,9 @@
 import 'package:priorities/domain/data/data_sources/priorities_data_source.dart';
-import 'package:priorities/domain/data/data_apis/priorities_data_apis.dart';
-import 'package:priorities/data/repositories/categories_repo.dart';
+import 'package:priorities/domain/data/repos/priorities_repo.dart';
 import 'package:priorities/data/models/category.dart';
 import 'package:priorities/data/models/priority.dart';
-import 'package:priorities/injection.dart';
 
-class PrioritiesRepository implements PrioritiesDataAPIS {
+class PrioritiesRepository implements IPrioritiesRepo {
   final PrioritiesDataSource localSource;
 
   const PrioritiesRepository({required this.localSource});
@@ -16,23 +14,22 @@ class PrioritiesRepository implements PrioritiesDataAPIS {
   }
 
   @override
-  Future<List<Priority>> findMany(Set<int> ids) {
-    return localSource.findMany(ids);
+  Future<List<Priority>> findMany(Set<int> ids) async {
+    final records = await localSource.findMany(ids);
+    records.sort((a, b) => b.id!.compareTo(a.id!));
+    return records;
   }
 
   @override
-  Future<List<Priority>> all() {
-    return localSource.all();
+  Future<List<Priority>> all() async {
+    final records = await localSource.all();
+    records.sort((a, b) => b.id!.compareTo(a.id!));
+    return records;
   }
 
   @override
-  Future<Priority> updateOrCreate(Priority priority) async {
-    // Assign the Priority to the default Categories
-    final defaultCategories =
-        await locator<CategoriesRepository>().allDefaultCategories();
-    priority.categoryIDs.addAll(defaultCategories.map((e) => e.id!).toSet());
-    // Update or create
-    return localSource.updateOrCreate(priority);
+  Future<Priority> createOrUpdate(Priority priority) async {
+    return localSource.createOrUpdate(priority);
   }
 
   @override
@@ -46,7 +43,9 @@ class PrioritiesRepository implements PrioritiesDataAPIS {
   }
 
   @override
-  Future<List<T>> allWithin(Category category) {
-    return localSource.allWithin(category);
+  Future<List<Priority>> prioritiesOf(Category category) async {
+    final records = await localSource.prioritiesOf(category);
+    records.sort((a, b) => b.id!.compareTo(a.id!));
+    return records;
   }
 }

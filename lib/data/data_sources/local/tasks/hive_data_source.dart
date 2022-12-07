@@ -11,7 +11,7 @@ class HiveTaskasksLocalDataSource implements TasksDataSource {
   @override
   Future<Task> find(int id) async {
     final map = Map<String, dynamic>.from(await client.find(key: id));
-    return Task.fromMap(map);
+    return Task.fromJson(map);
   }
 
   @override
@@ -24,23 +24,23 @@ class HiveTaskasksLocalDataSource implements TasksDataSource {
   Future<List<Task>> all() async {
     final list = await client.all();
     final listOfMaps = list.map((e) => Map<String, dynamic>.from(e)).toList();
-    return listOfMaps.map((map) => Task.fromMap(map)).toList();
+    return listOfMaps.map((map) => Task.fromJson(map)).toList();
   }
 
   @override
-  Future<List<Task>> allWithin(Priority priority) async {
+  Future<List<Task>> tasksOf(Priority priority) async {
     final allRecords = await all();
-    return allRecords.where((task) => task.priorityID == priority.id).toList();
+    return allRecords.where((task) => task.priority.id == priority.id).toList();
   }
 
   @override
-  Future<Task> updateOrCreate(Task object) async {
+  Future<Task> createOrUpdate(Task object) async {
     if (object.id == null) {
       object = object.copyWith(id: await client.generateID());
     }
     await client.updateOrCreate(
       key: object.id,
-      value: object.toMap(),
+      value: object.toJson(),
     );
     return object;
   }
