@@ -10,10 +10,10 @@ void main() async {
   await initClients();
   final providerContainer = ProviderContainer();
   await initProviders(providerContainer);
-  // await (await Hive.openBox('priorities')).clear();
-  // await (await Hive.openBox('categories')).clear();
-  // await (await Hive.openBox('tasks')).clear();
-  // await (await Hive.openBox('user_prefs')).clear();
+  // await (await Hive.openBox<String>('Priorities')).clear();
+  // await (await Hive.openBox<String>('Categories')).clear();
+  // await (await Hive.openBox<String>('Tasks')).clear();
+  // await (await Hive.openBox('User_prefs')).clear();
   runApp(
     ProviderScope(
       parent: providerContainer,

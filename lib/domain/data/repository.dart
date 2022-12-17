@@ -1,10 +1,9 @@
-abstract class IRepository<T> {
-  const IRepository();
+import 'package:priorities/domain/data/crud.dart';
+import 'package:priorities/domain/data/data_source.dart';
 
-  Future<T> find(int id);
-  Future<List<T>> findMany(Set<int> ids);
-  Future<List<T>> all();
-  Future<T> createOrUpdate(T object);
-  Future<void> delete(int id);
-  Future<void> deleteAll();
+abstract class IRepository<T extends Object> implements CRUD<T> {
+  final IDataSource<T> localSource;
+  const IRepository({
+    required this.localSource,
+  });
 }

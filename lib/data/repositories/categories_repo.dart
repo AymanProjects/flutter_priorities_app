@@ -1,15 +1,23 @@
-import 'package:priorities/domain/data/data_sources/categories_data_source.dart';
-import 'package:priorities/domain/data/repos/categories_repo.dart';
+import 'package:priorities/domain/data/data_source.dart';
+import 'package:priorities/domain/data/repository.dart';
 import 'package:priorities/data/models/category.dart';
 
-class CategoriesRepository implements ICategoriesRepo {
-  final CategoriesDataSource localSource;
+class CategoriesRepository implements IRepository<Category> {
+  @override
+  final IDataSource<Category> localSource;
 
   const CategoriesRepository({required this.localSource});
 
-  @override
-  Future<void> initDefaultValues() {
-    return localSource.initDefaultValues();
+  Future<void> initDefaultValues() async {
+    const defaultCategory1 = Category(title: 'Recent', isDefault: true, id: 1);
+    await localSource.createOrUpdateMany(
+      [defaultCategory1],
+    );
+  }
+
+  Future<List<Category>> allDefaultCategories() async {
+    final list = await localSource.all();
+    return list.where((category) => category.isDefault).toList();
   }
 
   @override
@@ -38,12 +46,17 @@ class CategoriesRepository implements ICategoriesRepo {
   }
 
   @override
-  Future<List<Category>> allDefaultCategories() {
-    return localSource.allDefaultCategories();
+  Future<void> deleteAll() {
+    return localSource.deleteAll();
   }
 
   @override
-  Future<void> deleteAll() {
-    return localSource.deleteAll();
+  Future<List<Category>> createOrUpdateMany(List<Category> objects) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Category>> where(Map<String, dynamic> query) {
+    throw UnimplementedError();
   }
 }

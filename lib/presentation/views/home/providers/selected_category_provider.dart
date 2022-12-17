@@ -12,14 +12,14 @@ final selectedCategoryProvider =
 class _SelectedCategoryNotifier extends AsyncNotifier<Category> {
   @override
   FutureOr<Category> build() async {
-    final lastSelected =
-        await ref.read(userPrefSerivceProvider).lastSelectedCategory();
-    if (lastSelected == null) {
+    final lastSelectedCategoryID =
+        await ref.read(userPrefSerivceProvider).lastSelectedCategoryID();
+    if (lastSelectedCategoryID is! int) {
       final defaultCategories =
           await ref.read(categoriesRepoProvider).allDefaultCategories();
       return defaultCategories.first;
     } else {
-      return lastSelected;
+      return ref.read(categoriesRepoProvider).find(lastSelectedCategoryID);
     }
   }
 
@@ -28,7 +28,7 @@ class _SelectedCategoryNotifier extends AsyncNotifier<Category> {
     try {
       await ref
           .read(userPrefSerivceProvider)
-          .updateLastSelectedCategory(category);
+          .updateLastSelectedCategory(category.id);
       state = AsyncData(category);
     } catch (error, st) {
       state = AsyncError<Category>(error, st).copyWithPrevious(state);
