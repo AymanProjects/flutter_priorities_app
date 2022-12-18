@@ -1,3 +1,5 @@
+import 'package:priorities/presentation/__components/medium_padding.dart';
+import 'package:priorities/presentation/views/priority/components/cancel_button.dart';
 import 'package:priorities/presentation/views/priority/components/create_or_confirm_button.dart';
 import 'package:priorities/presentation/views/priority/providers/currently_viewed_priority.dart';
 import 'package:priorities/presentation/views/priority/components/priority_colors.dart';
@@ -43,6 +45,8 @@ class PriorityView extends ConsumerWidget {
               ),
               const Spacer(),
               const CreateOrConfirmButton(),
+              const MediumPadding(),
+              const CancelButton(),
               const LargePadding(),
             ],
           ),
