@@ -36,12 +36,19 @@ class _CurrentlyViewedPriorityNotifier extends AsyncNotifier<Priority> {
     var priority = state.valueOrNull;
     if (priority != null) {
       state = const AsyncLoading();
+      final isCreating = priority.id == null;
       final key = ref.read(priorityViewFormKey);
       if (key.currentState?.validate() ?? false) {
         FocusManager.instance.primaryFocus?.unfocus(); // closes keyboard
-        await ref
-            .read(homePrioritiesProvider.notifier)
-            .createOrUpdate(priority);
+        if (isCreating) {
+          await ref
+              .read(homePrioritiesProvider.notifier)
+              .createPriority(priority);
+        } else {
+          await ref
+              .read(homePrioritiesProvider.notifier)
+              .updatePriority(priority);
+        }
         ref.read(navigationServiceProvider).closeCurrentPage();
       }
       state = AsyncData(priority);
