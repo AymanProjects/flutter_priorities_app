@@ -8,13 +8,15 @@ class PriorityColors extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final priority = ref.watch(currentlyViewedPriority);
+    final selectedColorId = ref.watch(currentlyViewedPriority.select(
+      (value) => value.valueOrNull?.colorId,
+    ));
     return ListView.builder(
       itemCount: kCardColors.length,
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final isSelected = priority.valueOrNull?.colorId == index;
+        final isSelected = selectedColorId == index;
         return ChoiceChip(
           pressElevation: 0,
           shape: CircleBorder(
@@ -36,7 +38,7 @@ class PriorityColors extends ConsumerWidget {
   }
 
   void changeSelectedColor(int index, WidgetRef ref) {
-    ref.read(currentlyViewedPriority.notifier).setPriority(
+    ref.read(currentlyViewedPriority.notifier).updateState(
           (priority) => priority.copyWith(colorId: index),
         );
   }

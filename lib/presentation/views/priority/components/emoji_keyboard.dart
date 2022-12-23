@@ -36,7 +36,7 @@ class EmojiKeyboard extends ConsumerWidget {
   }
 
   void onEmojiSelected(Emoji emoji, WidgetRef ref) {
-    ref.read(currentlyViewedPriority.notifier).setPriority(
+    ref.read(currentlyViewedPriority.notifier).updateState(
           (priority) => priority.copyWith(emoji: emoji.emoji),
         );
     ref.read(emojiKeyboardVisibility.notifier).closeEmojiKeyboard();

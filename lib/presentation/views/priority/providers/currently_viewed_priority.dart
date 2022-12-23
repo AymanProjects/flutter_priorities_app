@@ -3,10 +3,9 @@ import 'package:priorities/presentation/views/home/providers/home_priorities_pro
 import 'package:priorities/data/constants/ui_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/priority.dart';
-import 'dart:math';
-
 import 'package:priorities/presentation/views/priority/providers/form_key.dart';
 import 'package:priorities/providers/service_providers.dart';
+import 'dart:math';
 
 final currentlyViewedPriority =
     AsyncNotifierProvider<_CurrentlyViewedPriorityNotifier, Priority>(
@@ -28,7 +27,7 @@ class _CurrentlyViewedPriorityNotifier extends AsyncNotifier<Priority> {
 
   bool get isInEditingMode => state.valueOrNull?.id != null;
 
-  void setPriority(Priority Function(Priority oldData) callback) {
+  void updateState(Priority Function(Priority oldData) callback) {
     update(callback);
   }
 

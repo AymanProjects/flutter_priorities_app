@@ -21,7 +21,6 @@ class PrioritiesGrid extends ConsumerWidget {
           onRefresh: () async => ref.refresh(homePrioritiesProvider.future),
           child: GridView.count(
             childAspectRatio: kLgBlockAspectRatio,
-            // shrinkWrap: true,
             crossAxisCount: 2,
             mainAxisSpacing: kLgPadding,
             crossAxisSpacing: kLgPadding,

@@ -55,7 +55,7 @@ class PriorityBlockView extends ConsumerWidget {
   }
 
   void priorityBlockOnTap(WidgetRef ref) async {
-    ref.read(currentlyViewedPriority.notifier).setPriority((_) => priority);
+    ref.read(currentlyViewedPriority.notifier).updateState((_) => priority);
     ref.read(navigationServiceProvider).openPage(const PriorityView());
   }
 }

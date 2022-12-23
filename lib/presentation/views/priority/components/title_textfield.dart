@@ -1,5 +1,4 @@
 import 'package:priorities/presentation/views/priority/providers/currently_viewed_priority.dart';
-import 'package:priorities/presentation/views/priority/providers/focus_node_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +8,14 @@ class TitleTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final initialValue = ref.read(currentlyViewedPriority).valueOrNull?.title;
-    final focusNode = ref.watch(priorityViewFocusNode);
     return TextFormField(
       initialValue: initialValue,
       validator: titleValidator,
-      focusNode: focusNode,
       onChanged: (value) => changeTitle(value, ref),
+      style: TextStyle(
+        fontSize: 24.0,
+        color: Colors.black.withOpacity(0.75),
+      ),
       decoration: const InputDecoration(
         border: InputBorder.none,
         label: Text(
@@ -28,7 +29,7 @@ class TitleTextField extends ConsumerWidget {
   }
 
   void changeTitle(String title, WidgetRef ref) {
-    ref.read(currentlyViewedPriority.notifier).setPriority(
+    ref.read(currentlyViewedPriority.notifier).updateState(
           (priority) => priority.copyWith(title: title),
         );
   }

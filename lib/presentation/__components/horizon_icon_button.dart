@@ -6,6 +6,7 @@ class HorizonThinButton extends StatelessWidget {
   final String? text;
   final double textSize;
   final IconData? icon;
+  final double? iconSize;
   final double? width;
   final double? height;
   final Color? iconColor;
@@ -17,6 +18,7 @@ class HorizonThinButton extends StatelessWidget {
     this.text,
     this.textSize = 16.0,
     this.icon,
+    this.iconSize,
     this.width,
     this.height,
     this.iconColor = Colors.grey,
@@ -34,7 +36,7 @@ class HorizonThinButton extends StatelessWidget {
       icon: icon,
       foregroundColor: iconColor,
       color: color,
-      iconSize: height,
+      iconSize: iconSize ?? height,
       height: height,
       width: width,
       padding: EdgeInsets.zero,

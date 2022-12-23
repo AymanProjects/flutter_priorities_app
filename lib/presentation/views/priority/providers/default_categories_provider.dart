@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:priorities/data/models/category.dart';
 import 'package:priorities/providers/repo_providers.dart';

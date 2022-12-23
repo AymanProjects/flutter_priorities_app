@@ -9,6 +9,7 @@ class ClosePageButton extends StatelessWidget {
     return HorizonThinButton(
       onPressed: Navigator.of(context).pop,
       icon: Icons.arrow_back_ios,
+      iconColor: Colors.black54,
     );
   }
 }

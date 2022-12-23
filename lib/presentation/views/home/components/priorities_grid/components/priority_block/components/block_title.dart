@@ -18,7 +18,7 @@ class BlockTitle extends StatelessWidget {
       style: const TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
-        fontSize: 16.0,
+        fontSize: 18.0,
       ),
     );
   }

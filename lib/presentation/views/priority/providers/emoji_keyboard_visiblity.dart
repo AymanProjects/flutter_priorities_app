@@ -1,4 +1,4 @@
-import 'package:priorities/presentation/views/priority/providers/focus_node_provider.dart';
+import 'package:priorities/presentation/views/priority/providers/group_focus_node_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final emojiKeyboardVisibility =
@@ -9,7 +9,7 @@ final emojiKeyboardVisibility =
 class _EmojiKeyboardVisibilityNotifier extends AutoDisposeNotifier<bool> {
   @override
   bool build() {
-    final focusNode = ref.watch(priorityViewFocusNode);
+    final focusNode = ref.watch(priorityViewGroupFocusNode);
     if (focusNode.hasFocus) {
       closeEmojiKeyboard();
     }

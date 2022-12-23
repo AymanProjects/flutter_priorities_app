@@ -2,7 +2,7 @@ import 'package:priorities/presentation/__components/close_page_button.dart';
 import 'package:flutter/material.dart';
 
 /// Standard view to be used by every screen in this app.
-/// It gives the screens standard configurations like padding.
+/// It gives the screens standard configurations like padding & title.
 
 class View extends StatelessWidget {
   final String title;
@@ -47,6 +47,7 @@ class View extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.w800,
+                  color: Colors.black87,
                 ),
               ),
               const SizedBox(height: 18.0),
